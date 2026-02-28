@@ -43,7 +43,7 @@ export default function Sidebar({ collapsed, setCollapsed }) {
   return (
     <aside
       style={{
-        width: collapsed ? 56 : 260,,
+        width: collapsed ? 72 : 260,
         background: 'linear-gradient(180deg, #091f40 0%, #0550a3 60%, #0565c9 100%)',
         position: 'fixed',
         top: 0,
