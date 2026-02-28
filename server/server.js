@@ -1,3 +1,4 @@
+if(process.env.RUN_SEED === 'true') require('./utils/seed.js')
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
