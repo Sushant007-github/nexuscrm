@@ -1,6 +1,6 @@
-import { NavLink } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import {
-  HomeIcon, UsersIcon, DocumentTextIcon, CurrencyDollarIcon,
+  HomeIcon, UsersIcon, CurrencyDollarIcon,
   ChartBarIcon, CalendarIcon, Cog6ToothIcon, ShieldCheckIcon,
   ChevronLeftIcon, ChevronRightIcon, HeartIcon, AcademicCapIcon,
   BuildingStorefrontIcon, Squares2X2Icon, BeakerIcon
@@ -39,6 +39,12 @@ const navGroups = [
 
 export default function Sidebar({ collapsed, setCollapsed }) {
   const { user, hasRole } = useAuth()
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const goTo = (path) => {
+    navigate(path)
+  }
 
   return (
     <aside
@@ -57,86 +63,94 @@ export default function Sidebar({ collapsed, setCollapsed }) {
       }}
     >
       {/* Logo */}
-      <div className="flex items-center justify-between px-4 py-5 min-h-[64px]">
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 16px', minHeight: 64 }}>
         {!collapsed && (
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center shadow-lg">
-              <BeakerIcon className="w-5 h-5 text-white" />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{ width: 32, height: 32, borderRadius: 12, background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <BeakerIcon style={{ width: 20, height: 20, color: 'white' }} />
             </div>
             <div>
-              <span className="text-white font-display text-lg font-bold tracking-tight leading-none">Nexus</span>
-              <span className="text-blue-300 font-display text-lg font-bold tracking-tight leading-none">CRM</span>
+              <span style={{ color: 'white', fontWeight: 700, fontSize: 18 }}>Nexus</span>
+              <span style={{ color: '#93c5fd', fontWeight: 700, fontSize: 18 }}>CRM</span>
             </div>
           </div>
         )}
         {collapsed && (
-          <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center mx-auto">
-            <BeakerIcon className="w-5 h-5 text-white" />
+          <div style={{ width: 32, height: 32, borderRadius: 12, background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto' }}>
+            <BeakerIcon style={{ width: 20, height: 20, color: 'white' }} />
           </div>
         )}
         {!collapsed && (
           <button
             onClick={() => setCollapsed(true)}
-            className="p-1.5 rounded-lg text-blue-200/60 hover:text-white hover:bg-white/10 transition-colors ml-2"
+            style={{ padding: 6, borderRadius: 8, background: 'transparent', border: 'none', cursor: 'pointer', color: 'rgba(147,197,253,0.6)' }}
           >
-            <ChevronLeftIcon className="w-4 h-4" />
+            <ChevronLeftIcon style={{ width: 16, height: 16 }} />
           </button>
         )}
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 overflow-y-auto overflow-x-hidden px-3 py-2 space-y-6">
+      <nav style={{ flex: 1, overflowY: 'auto', padding: '8px 12px' }}>
         {navGroups.map(group => (
-          <div key={group.label}>
+          <div key={group.label} style={{ marginBottom: 24 }}>
             {!collapsed && (
-              <div className="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-blue-200/40">{group.label}</div>
+              <div style={{ padding: '0 12px', marginBottom: 8, fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(147,197,253,0.4)' }}>
+                {group.label}
+              </div>
             )}
-            <div className="space-y-0.5">
-              {group.items.map(item => {
-                if (item.roles && !hasRole(...item.roles)) return null
-                return (
-                  <NavLink
-                    key={item.to}
-                    to={item.to}
-                    className={({ isActive }) =>
-                      `flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all cursor-pointer ${
-                        isActive
-                          ? 'bg-white/20 text-white shadow-lg'
-                          : 'text-blue-100/70 hover:bg-white/10 hover:text-white'
-                      }`
-                    }
-                  >
-                    <item.icon className={`w-5 h-5 flex-shrink-0 ${item.color || ''}`} />
-                    {!collapsed && (
-                      <span className="whitespace-nowrap text-sm font-medium">{item.label}</span>
-                    )}
-                  </NavLink>
-                )
-              })}
-            </div>
+            {group.items.map(item => {
+              if (item.roles && !hasRole(...item.roles)) return null
+              const isActive = location.pathname === item.to || location.pathname.startsWith(item.to + '/')
+              return (
+                <div
+                  key={item.to}
+                  onClick={() => goTo(item.to)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 12,
+                    padding: '10px 12px',
+                    borderRadius: 12,
+                    marginBottom: 2,
+                    cursor: 'pointer',
+                    background: isActive ? 'rgba(255,255,255,0.2)' : 'transparent',
+                    color: isActive ? 'white' : 'rgba(191,219,254,0.7)',
+                    WebkitTapHighlightColor: 'transparent',
+                    touchAction: 'manipulation',
+                    userSelect: 'none',
+                  }}
+                >
+                  <item.icon style={{ width: 20, height: 20, flexShrink: 0, color: item.color ? undefined : 'inherit' }} />
+                  {!collapsed && (
+                    <span style={{ fontSize: 14, fontWeight: 500, whiteSpace: 'nowrap' }}>{item.label}</span>
+                  )}
+                </div>
+              )
+            })}
           </div>
         ))}
       </nav>
 
-      {/* User profile at bottom */}
-      <div className="px-3 py-4 border-t border-white/10">
-        <div className={`flex items-center gap-3 px-2 py-2 rounded-xl hover:bg-white/10 transition-colors cursor-pointer ${collapsed ? 'justify-center' : ''}`}>
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-300 to-blue-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0 shadow-lg">
+      {/* User profile */}
+      <div style={{ padding: '16px 12px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '8px', borderRadius: 12, justifyContent: collapsed ? 'center' : 'flex-start' }}>
+          <div style={{ width: 32, height: 32, borderRadius: 12, background: 'linear-gradient(135deg, #93c5fd, #2563eb)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 12, fontWeight: 700, flexShrink: 0 }}>
             {avatarText(user?.name)}
           </div>
           {!collapsed && (
-            <div className="min-w-0 flex-1 overflow-hidden">
-              <div className="text-sm font-semibold text-white truncate">{user?.name}</div>
-              <div className="text-[11px] text-blue-200/60 truncate">{user?.email}</div>
+            <div style={{ overflow: 'hidden' }}>
+              <div style={{ fontSize: 14, fontWeight: 600, color: 'white', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user?.name}</div>
+              <div style={{ fontSize: 11, color: 'rgba(147,197,253,0.6)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user?.email}</div>
             </div>
           )}
         </div>
         {collapsed && (
           <button
             onClick={() => setCollapsed(false)}
-            className="mt-2 w-full flex justify-center p-1.5 rounded-lg text-blue-200/60 hover:text-white hover:bg-white/10 transition-colors"
+            style={{ marginTop: 8, width: '100%', display: 'flex', justifyContent: 'center', padding: 6, borderRadius: 8, background: 'transparent', border: 'none', cursor: 'pointer', color: 'rgba(147,197,253,0.6)' }}
           >
-            <ChevronRightIcon className="w-4 h-4" />
+            <ChevronRightIcon style={{ width: 16, height: 16 }} />
           </button>
         )}
       </div>
