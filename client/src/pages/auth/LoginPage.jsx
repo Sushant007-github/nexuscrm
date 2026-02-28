@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { motion } from 'framer-motion'
 import { EyeIcon, EyeSlashIcon, BeakerIcon, LockClosedIcon, EnvelopeIcon } from '@heroicons/react/24/outline'
 import { useAuth } from '../../context/AuthContext'
 import toast from 'react-hot-toast'
@@ -36,27 +35,33 @@ export default function LoginPage() {
     }
   }
 
+  const handleDemoLogin = async (demoEmail) => {
+    setLoading(true)
+    try {
+      await login(demoEmail, 'password123')
+      toast.success('Welcome back!')
+      navigate('/dashboard')
+    } catch (err) {
+      toast.error(err.response?.data?.error || 'Invalid credentials')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className="min-h-screen flex dark:bg-[#0a1220]" style={{ background: 'linear-gradient(135deg, #0a1220 0%, #0d2240 50%, #0a1a35 100%)' }}>
       {/* Left panel - branding */}
       <div className="hidden lg:flex flex-col justify-between p-12 w-[45%] relative overflow-hidden">
-        {/* BG decoration */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-20 left-20 w-96 h-96 rounded-full opacity-10" style={{ background: 'radial-gradient(circle, #3aa0f8 0%, transparent 70%)' }} />
           <div className="absolute bottom-20 right-0 w-80 h-80 rounded-full opacity-5" style={{ background: 'radial-gradient(circle, #1082eb 0%, transparent 70%)' }} />
-          {/* Grid pattern */}
           <svg className="absolute inset-0 w-full h-full opacity-5" xmlns="http://www.w3.org/2000/svg">
             <defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="0.5"/></pattern></defs>
             <rect width="100%" height="100%" fill="url(#grid)" />
           </svg>
         </div>
 
-        {/* Logo */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex items-center gap-3 relative z-10"
-        >
+        <div className="flex items-center gap-3 relative z-10">
           <div className="w-10 h-10 rounded-2xl bg-brand-600 flex items-center justify-center shadow-brand-lg">
             <BeakerIcon className="w-6 h-6 text-white" />
           </div>
@@ -64,24 +69,16 @@ export default function LoginPage() {
             <span className="text-white font-display text-2xl font-bold">Nexus</span>
             <span className="text-brand-400 font-display text-2xl font-bold">CRM</span>
           </div>
-        </motion.div>
+        </div>
 
-        {/* Hero content */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="relative z-10"
-        >
+        <div className="relative z-10">
           <h2 className="text-5xl font-display font-bold text-white leading-tight mb-4">
             Enterprise Intelligence<br />
             <span className="text-brand-400">at Scale</span>
           </h2>
           <p className="text-blue-200/60 text-lg mb-10 leading-relaxed">
-            A modular CRM platform built for hospitals, schools, and restaurants. Manage everything from a single, beautiful interface.
+            A modular CRM platform built for hospitals, schools, and restaurants.
           </p>
-
-          {/* Feature pills */}
           <div className="flex flex-wrap gap-2">
             {['Multi-industry', 'Role-based access', 'Real-time analytics', 'Invoice management', 'Audit logging'].map(f => (
               <span key={f} className="bg-white/10 text-blue-200 text-sm px-4 py-1.5 rounded-full border border-white/10">
@@ -89,15 +86,9 @@ export default function LoginPage() {
               </span>
             ))}
           </div>
-        </motion.div>
+        </div>
 
-        {/* Bottom testimonial */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="relative z-10 border border-white/10 rounded-2xl p-5 bg-white/5 backdrop-blur-sm"
-        >
+        <div className="relative z-10 border border-white/10 rounded-2xl p-5 bg-white/5 backdrop-blur-sm">
           <p className="text-blue-100/80 italic text-sm leading-relaxed mb-3">
             "NexusCRM transformed how our hospital manages patients. The reporting alone saved us 20+ hours weekly."
           </p>
@@ -108,17 +99,12 @@ export default function LoginPage() {
               <div className="text-blue-300/60 text-xs">CMO, Metro General Hospital</div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
 
       {/* Right panel - login form */}
       <div className="flex-1 flex items-center justify-center p-6">
-        <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.4 }}
-          className="w-full max-w-md"
-        >
+        <div className="w-full max-w-md">
           {/* Mobile logo */}
           <div className="flex items-center gap-2 mb-8 lg:hidden justify-center">
             <div className="w-9 h-9 rounded-xl bg-brand-600 flex items-center justify-center shadow-brand">
@@ -167,16 +153,15 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              <motion.button
+              <button
                 type="submit"
                 disabled={loading}
-                whileTap={{ scale: 0.98 }}
-                className="w-full bg-brand-600 hover:bg-brand-500 text-white font-semibold py-3.5 rounded-xl transition-all shadow-brand-lg hover:shadow-brand-lg flex items-center justify-center gap-2 text-sm disabled:opacity-60"
+                className="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-4 rounded-xl transition-all flex items-center justify-center gap-2 text-sm disabled:opacity-60 cursor-pointer"
               >
                 {loading ? (
                   <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Signing in...</>
                 ) : 'Sign in to workspace →'}
-              </motion.button>
+              </button>
             </form>
 
             {/* Demo accounts */}
@@ -187,17 +172,17 @@ export default function LoginPage() {
                   <button
                     key={a.email}
                     type="button"
-                    onClick={() => { setEmail(a.email); setPassword('password123') }}
-                    className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-2.5 text-left transition-all group"
+                    onClick={() => handleDemoLogin(a.email)}
+                    className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-2.5 text-left transition-all cursor-pointer"
                   >
-                    <div className="text-xs font-semibold text-white group-hover:text-brand-300 transition-colors">{a.label}</div>
+                    <div className="text-xs font-semibold text-white">{a.label}</div>
                     <div className="text-[10px] text-blue-200/40 mt-0.5">{a.role}</div>
                   </button>
                 ))}
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   )
