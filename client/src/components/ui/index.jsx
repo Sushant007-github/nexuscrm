@@ -178,7 +178,7 @@ export function Select({ label, value, onChange, options, className = '' }) {
     <div className={className}>
       {label && <label className="label">{label}</label>}
       <select value={value} onChange={e => onChange(e.target.value)}
-        className="input appearance-none pr-8 bg-[url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E\")] bg-no-repeat bg-[right_0.75rem_center] bg-[length:1rem]">
+      className="input appearance-none pr-8">
         {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
       </select>
     </div>
