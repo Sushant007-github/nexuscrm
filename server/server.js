@@ -14,7 +14,6 @@ app.use(cors({
   origin: '*',
   credentials: false
 }));
-}));
 app.use(morgan('dev'));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
