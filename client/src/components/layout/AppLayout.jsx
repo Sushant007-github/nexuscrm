@@ -26,7 +26,7 @@ export default function AppLayout() {
     }
   }, [location.pathname])
 
-  const sidebarW = collapsed ? 72 : 260
+  const sidebarW = collapsed ? 56 : 260
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-[#0f1623]">
