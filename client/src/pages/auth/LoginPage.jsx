@@ -4,15 +4,9 @@ import { EyeIcon, EyeSlashIcon, BeakerIcon, LockClosedIcon, EnvelopeIcon } from 
 import { useAuth } from '../../context/AuthContext'
 import toast from 'react-hot-toast'
 
-const DEMO_ACCOUNTS = [
-  { label: 'Super Admin', email: 'admin@crm.com', role: 'Full access' },
-  { label: 'Manager', email: 'manager@crm.com', role: 'Team lead' },
-  { label: 'Staff', email: 'staff@crm.com', role: 'Limited access' },
-]
-
 export default function LoginPage() {
   const [email, setEmail] = useState('')
-const [password, setPassword] = useState('')
+  const [password, setPassword] = useState('')
   const [showPass, setShowPass] = useState(false)
   const [loading, setLoading] = useState(false)
   const { login } = useAuth()
@@ -26,19 +20,6 @@ const [password, setPassword] = useState('')
     setLoading(true)
     try {
       await login(email, password)
-      toast.success('Welcome back!')
-      navigate('/dashboard')
-    } catch (err) {
-      toast.error(err.response?.data?.error || 'Invalid credentials')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const handleDemoLogin = async (demoEmail) => {
-    setLoading(true)
-    try {
-      await login(demoEmail, 'password123')
       toast.success('Welcome back!')
       navigate('/dashboard')
     } catch (err) {
@@ -62,19 +43,19 @@ const [password, setPassword] = useState('')
         </div>
 
         <div className="flex items-center gap-3 relative z-10">
-          <div className="w-10 h-10 rounded-2xl bg-brand-600 flex items-center justify-center shadow-brand-lg">
+          <div className="w-10 h-10 rounded-2xl bg-blue-600 flex items-center justify-center">
             <BeakerIcon className="w-6 h-6 text-white" />
           </div>
           <div>
-            <span className="text-white font-display text-2xl font-bold">Nexus</span>
-            <span className="text-brand-400 font-display text-2xl font-bold">CRM</span>
+            <span className="text-white font-bold text-2xl">Nexus</span>
+            <span className="text-blue-400 font-bold text-2xl">CRM</span>
           </div>
         </div>
 
         <div className="relative z-10">
-          <h2 className="text-5xl font-display font-bold text-white leading-tight mb-4">
+          <h2 className="text-5xl font-bold text-white leading-tight mb-4">
             Enterprise Intelligence<br />
-            <span className="text-brand-400">at Scale</span>
+            <span className="text-blue-400">at Scale</span>
           </h2>
           <p className="text-blue-200/60 text-lg mb-10 leading-relaxed">
             A modular CRM platform built for hospitals, schools, and restaurants.
@@ -88,7 +69,7 @@ const [password, setPassword] = useState('')
           </div>
         </div>
 
-        <div className="relative z-10 border border-white/10 rounded-2xl p-5 bg-white/5 backdrop-blur-sm">
+        <div className="relative z-10 border border-white/10 rounded-2xl p-5 bg-white/5">
           <p className="text-blue-100/80 italic text-sm leading-relaxed mb-3">
             "NexusCRM transformed how our hospital manages patients. The reporting alone saved us 20+ hours weekly."
           </p>
@@ -107,15 +88,15 @@ const [password, setPassword] = useState('')
         <div className="w-full max-w-md">
           {/* Mobile logo */}
           <div className="flex items-center gap-2 mb-8 lg:hidden justify-center">
-            <div className="w-9 h-9 rounded-xl bg-brand-600 flex items-center justify-center shadow-brand">
+            <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center">
               <BeakerIcon className="w-5 h-5 text-white" />
             </div>
-            <span className="text-white font-display text-xl font-bold">NexusCRM</span>
+            <span className="text-white text-xl font-bold">NexusCRM</span>
           </div>
 
           <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl p-8 shadow-2xl">
             <div className="mb-8">
-              <h1 className="text-2xl font-display font-bold text-white mb-1">Welcome back</h1>
+              <h1 className="text-2xl font-bold text-white mb-1">Welcome back</h1>
               <p className="text-blue-200/60 text-sm">Sign in to your workspace</p>
             </div>
 
@@ -123,13 +104,14 @@ const [password, setPassword] = useState('')
               <div>
                 <label className="block text-xs font-semibold text-blue-200/60 uppercase tracking-wider mb-1.5">Email address</label>
                 <div className="relative">
-                  <EnvelopeIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-blue-300/40" />
+                  <EnvelopeIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-300/40" />
                   <input
                     type="email"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     required
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 pl-10 text-white placeholder-blue-200/30 text-sm focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all"
+                    autoComplete="email"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 pl-10 text-white placeholder-blue-200/30 text-sm focus:outline-none focus:border-blue-500 transition-all"
                     placeholder="you@company.com"
                   />
                 </div>
@@ -138,17 +120,18 @@ const [password, setPassword] = useState('')
               <div>
                 <label className="block text-xs font-semibold text-blue-200/60 uppercase tracking-wider mb-1.5">Password</label>
                 <div className="relative">
-                  <LockClosedIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-blue-300/40" />
+                  <LockClosedIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-300/40" />
                   <input
                     type={showPass ? 'text' : 'password'}
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     required
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 pl-10 pr-10 text-white placeholder-blue-200/30 text-sm focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all"
+                    autoComplete="current-password"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 pl-10 pr-10 text-white placeholder-blue-200/30 text-sm focus:outline-none focus:border-blue-500 transition-all"
                     placeholder="••••••••"
                   />
-                  <button type="button" onClick={() => setShowPass(s => !s)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-blue-200/40 hover:text-blue-200 transition-colors">
-                    {showPass ? <EyeSlashIcon className="w-4.5 h-4.5" /> : <EyeIcon className="w-4.5 h-4.5" />}
+                  <button type="button" onClick={() => setShowPass(s => !s)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-blue-200/40 hover:text-blue-200">
+                    {showPass ? <EyeSlashIcon className="w-4 h-4" /> : <EyeIcon className="w-4 h-4" />}
                   </button>
                 </div>
               </div>
@@ -163,5 +146,9 @@ const [password, setPassword] = useState('')
                 ) : 'Sign in to workspace →'}
               </button>
             </form>
-
-            
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
