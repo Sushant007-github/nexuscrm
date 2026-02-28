@@ -11,8 +11,8 @@ const DEMO_ACCOUNTS = [
 ]
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('admin@crm.com')
-  const [password, setPassword] = useState('password123')
+  const [email, setEmail] = useState('')
+const [password, setPassword] = useState('')
   const [showPass, setShowPass] = useState(false)
   const [loading, setLoading] = useState(false)
   const { login } = useAuth()
@@ -164,26 +164,4 @@ export default function LoginPage() {
               </button>
             </form>
 
-            {/* Demo accounts */}
-            <div className="mt-6 pt-6 border-t border-white/10">
-              <p className="text-xs text-blue-200/40 uppercase tracking-wider font-semibold mb-3">Demo accounts (password: password123)</p>
-              <div className="grid grid-cols-3 gap-2">
-                {DEMO_ACCOUNTS.map(a => (
-                  <button
-                    key={a.email}
-                    type="button"
-                    onClick={() => handleDemoLogin(a.email)}
-                    className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-2.5 text-left transition-all cursor-pointer"
-                  >
-                    <div className="text-xs font-semibold text-white">{a.label}</div>
-                    <div className="text-[10px] text-blue-200/40 mt-0.5">{a.role}</div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
+            
