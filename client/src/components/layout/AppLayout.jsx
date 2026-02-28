@@ -4,16 +4,27 @@ import Sidebar from './Sidebar'
 import TopBar from './TopBar'
 
 export default function AppLayout() {
-  const [collapsed, setCollapsed] = useState(false)
+  const [collapsed, setCollapsed] = useState(true)
   const location = useLocation()
 
-  // Auto-collapse on small screens
+  // Always collapse on mobile
   useEffect(() => {
-    const check = () => setCollapsed(window.innerWidth < 1024)
+    const check = () => {
+      if (window.innerWidth < 768) {
+        setCollapsed(true)
+      }
+    }
     check()
     window.addEventListener('resize', check)
     return () => window.removeEventListener('resize', check)
   }, [])
+
+  // Collapse sidebar on navigation on mobile
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      setCollapsed(true)
+    }
+  }, [location.pathname])
 
   const sidebarW = collapsed ? 72 : 260
 
@@ -22,10 +33,10 @@ export default function AppLayout() {
       <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
       <TopBar collapsed={collapsed} />
       <main
-        className="pt-16 min-h-screen transition-all duration-300"
-        style={{ marginLeft: sidebarW }}
+        className="pt-16 min-h-screen"
+        style={{ marginLeft: sidebarW, transition: 'margin-left 0.25s ease' }}
       >
-        <div className="p-6">
+        <div className="p-4">
           <Outlet />
         </div>
       </main>
