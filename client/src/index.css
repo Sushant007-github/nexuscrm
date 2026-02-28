@@ -17,6 +17,14 @@
     @apply bg-gray-50 dark:bg-[#0f1623] text-gray-900 dark:text-gray-100;
     font-family: 'Outfit', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
+    touch-action: manipulation;
+  }
+
+  /* Fix touch on all clickable elements */
+  button, a, [role="button"], [onClick], div[onClick] {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
   }
 
   h1, h2, h3 { font-family: 'Syne', sans-serif; }
@@ -42,14 +50,20 @@
 
   .btn-primary {
     @apply bg-brand-600 hover:bg-brand-700 active:bg-brand-800 text-white font-medium px-4 py-2 rounded-xl transition-all duration-150 shadow-brand hover:shadow-brand-lg flex items-center gap-2 text-sm;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .btn-secondary {
     @apply bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-medium px-4 py-2 rounded-xl transition-all duration-150 flex items-center gap-2 text-sm;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .btn-ghost {
     @apply hover:bg-gray-100 dark:hover:bg-gray-700/60 text-gray-600 dark:text-gray-400 font-medium px-3 py-2 rounded-xl transition-all duration-150 flex items-center gap-2 text-sm;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .input {
@@ -70,18 +84,18 @@
 
   .sidebar-item {
     @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 cursor-pointer text-blue-100/80 hover:text-white hover:bg-white/10;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .sidebar-item-active {
     @apply sidebar-item bg-white/15 text-white shadow-sm;
   }
 
-  /* Skeleton loading */
   .skeleton {
     @apply bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse;
   }
 
-  /* Shimmer effect */
   .shimmer {
     background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
     background-size: 200% 100%;
@@ -101,12 +115,11 @@
   .pill-status-draft { @apply badge bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400; }
 }
 
-/* Page transitions */
 .page-enter { animation: slide-up 0.25s ease-out both; }
 
-/* Tooltip */
 [data-tooltip] { position: relative; }
 [data-tooltip]:hover::after {
   content: attr(data-tooltip);
   @apply absolute left-full ml-3 top-1/2 -translate-y-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded-lg whitespace-nowrap z-50 pointer-events-none;
 }
+
